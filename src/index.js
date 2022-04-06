@@ -28,6 +28,17 @@ app.use("/uploads", async (req, res, next) => {
   }
 });
 
+app.use("/images", async (req, res, next) => {
+  try {
+    let images = await Image.find();
+    res.status(200).json({ images });
+  } catch (error) {
+    res.status(409).json({
+      message: error.message,
+    });
+  }
+});
+
 app.use("/", async (req, res, next) => {
   res.status(200).json({ message: "Welcome" });
 });
@@ -40,7 +51,7 @@ mongoose
   .then(console.log("database connected"))
   .catch((err) => err);
 
-const PORT = 5000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log("listening at port " + PORT);
 });
